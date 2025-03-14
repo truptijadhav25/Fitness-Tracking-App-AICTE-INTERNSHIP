@@ -12,6 +12,10 @@ app = Flask(__name__)
 app.secret_key = "your_secret_key"
 bcrypt = Bcrypt(app)
 
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=int(os.environ.get("PORT", 10000)))
+
+
 # --- Database Connection ---
 # Connect to MongoDB
 client = MongoClient("mongodb://localhost:27017/")
