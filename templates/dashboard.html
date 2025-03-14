@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <!-- Welcome Section -->
+    <div class="text-center">
+        <h2 class="fw-bold">Welcome, {{ user.user_name }}! 🎉</h2>
+        <p class="text-muted">Stay consistent, track your progress, and reach your fitness goals!</p>
+    </div>
+
+    <!-- User Stats -->
+    <div class="row mt-4">
+        <div class="col-md-3">
+            <div class="card stats-card">
+                <i class="fas fa-fire icon"></i>
+                <h5>Calories Burned</h5>
+                <p>{{ user.calories_burned }} kcal</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card stats-card">
+                <i class="fas fa-walking icon"></i>
+                <h5>Steps Taken</h5>
+                <p>{{ user.steps_progress }} steps</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card stats-card">
+                <i class="fas fa-clock icon"></i>
+                <h5>Active Minutes</h5>
+                <p>{{ user.active_minutes }} min</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card stats-card">
+                <i class="fas fa-bullseye icon"></i>
+                <h5>Daily Goal Progress</h5>
+                <p>{{ user.daily_goal }}%</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Progress Charts -->
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-primary text-white">Calories Burned Over Time</div>
+                <div class="card-body">
+                    <canvas id="caloriesChart"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-success text-white">Workout Progress</div>
+                <div class="card-body">
+                    <canvas id="workoutChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Workouts -->
+    <div class="card mt-4">
+        <div class="card-header bg-danger text-white">Recent Workouts 🏋️‍♂️</div>
+        <div class="card-body">
+            <ul class="list-group">
+                {% for workout in recent_workouts %}
+                    <li class="list-group-item">{{ workout.date }} - {{ workout.exercise }} ({{ workout.duration }} min)</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <!-- Achievements -->
+    <div class="card mt-4">
+        <div class="card-header bg-warning text-white">Your Achievements 🏆</div>
+        <div class="card-body text-center">
+            <i class="fas fa-medal fa-3x text-warning"></i>
+            <p class="mt-2">You've burned {{ user.calories_burned }} kcal! Keep pushing! 🚀</p>
+        </div>
+    </div>
+
+    <!-- Motivational Quotes -->
+    <div class="text-center mt-4">
+        <blockquote class="blockquote">
+            <p class="mb-0">{{ motivational_quote }}</p>
+        </blockquote>
+    </div>
+</div>
+
+<!-- Chart.js Script -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    var ctx1 = document.getElementById('caloriesChart').getContext('2d');
+    var caloriesChart = new Chart(ctx1, {
+        type: 'line',
+        data: {
+            labels: {{ progress_dates | tojson }},
+            datasets: [{
+                label: 'Calories Burned',
+                data: {{ progress_data | tojson }},
+                borderColor: 'rgb(255, 99, 132)',
+                borderWidth: 2,
+                fill: false
+            }]
+        },
+        options: { responsive: true }
+    });
+
+    var ctx2 = document.getElementById('workoutChart').getContext('2d');
+    var workoutChart = new Chart(ctx2, {
+        type: 'bar',
+        data: {
+            labels: {{ progress_dates | tojson }},
+            datasets: [{
+                label: 'Workout Minutes',
+                data: {{ progress_data | tojson }},
+                backgroundColor: 'rgb(54, 162, 235)',
+                borderWidth: 1
+            }]
+        },
+        options: { responsive: true }
+    });
+</script>
+{% endblock %}

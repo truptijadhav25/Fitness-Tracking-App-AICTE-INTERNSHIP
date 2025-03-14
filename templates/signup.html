@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="card p-4 shadow-lg form-container">
+        <h2 class="text-center mb-3">Create Account</h2>
+        
+        <form method="POST" action="/signup">
+            <div class="mb-3">
+                <label class="form-label">Full Name</label>
+                <input type="text" class="form-control" name="name" placeholder="Enter your full name" required>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-control" name="email" placeholder="Enter your email" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Password</label>
+                    <input type="password" class="form-control" name="password" placeholder="Create a password" required>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Age</label>
+                    <input type="number" class="form-control" name="age" placeholder="Enter your age" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Gender</label>
+                    <select class="form-control" name="gender" required>
+                        <option value="" disabled selected>Select gender</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Height (cm)</label>
+                    <input type="number" class="form-control" name="height" placeholder="Enter height" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Weight (kg)</label>
+                    <input type="number" class="form-control" name="weight" placeholder="Enter weight" required>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100 submit-btn">
+                Sign Up
+            </button>
+        </form>
+
+        <div class="text-center mt-3">
+            <p>Already have an account? 
+                <a href="/login" class="login-link">
+                    Login here
+                </a>
+            </p>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Background color for the form section */
+    .form-container {
+        background: linear-gradient(135deg, #6a11cb, #2575fc); /* Gradient effect */
+        border-radius: 12px;
+        box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+        width: 450px;
+        color: white;
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s;
+    }
+
+    /* Hover effect to make form pop */
+    .form-container:hover {
+        transform: scale(1.05);
+        box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Title styling */
+    .form-container h2 {
+        font-weight: bold;
+        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Form input styling */
+    .form-control {
+        border-radius: 8px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        transition: all 0.3s;
+    }
+
+    /* Input focus effect */
+    .form-control:focus {
+        border-color: #ff9800;
+        box-shadow: 0px 0px 10px rgba(255, 152, 0, 0.5);
+    }
+
+    /* Sign up button */
+    .submit-btn {
+        border-radius: 5px;
+        font-size: 18px;
+        padding: 10px;
+        font-weight: bold;
+        background: #ff9800;
+        border: none;
+        transition: all 0.3s ease-in-out;
+    }
+
+    /* Button hover effect */
+    .submit-btn:hover {
+        background: #e68a00;
+        transform: scale(1.05);
+        box-shadow: 0px 4px 10px rgba(255, 152, 0, 0.5);
+    }
+
+    /* Login link styling */
+    .login-link {
+        color: #ffcc80;
+        font-weight: bold;
+        text-decoration: none;
+        transition: all 0.3s;
+    }
+
+    /* Login link hover effect */
+    .login-link:hover {
+        color: #ffffff;
+        text-decoration: underline;
+    }
+</style>
+
+{% endblock %}

@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="card p-4 shadow-lg login-container">
+        <h2 class="text-center mb-3">Login</h2>
+        
+        <form method="POST" action="/login">
+            <div class="mb-3">
+                <label class="form-label">Email</label>
+                <input type="email" class="form-control" name="email" placeholder="Enter your email" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Password</label>
+                <input type="password" class="form-control" name="password" placeholder="Enter your password" required>
+            </div>
+            <button type="submit" class="btn btn-success w-100 login-btn">Login</button>
+        </form>
+
+        <div class="text-center mt-3">
+            <p>Don't have an account? 
+                <a href="/signup" class="signup-link">Sign up here</a>
+            </p>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Background color for login form */
+    .login-container {
+        background: linear-gradient(135deg, #6a11cb, #2575fc); /* Same gradient as signup */
+        border-radius: 12px;
+        box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+        width: 400px;
+        color: white;
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s;
+    }
+
+    /* Hover effect to make form pop */
+    .login-container:hover {
+        transform: scale(1.05);
+        box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Title styling */
+    .login-container h2 {
+        font-weight: bold;
+        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Form input styling */
+    .form-control {
+        border-radius: 8px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        transition: all 0.3s;
+    }
+
+    /* Input focus effect */
+    .form-control:focus {
+        border-color: #ff9800;
+        box-shadow: 0px 0px 10px rgba(255, 152, 0, 0.5);
+    }
+
+    /* Login button */
+    .login-btn {
+        border-radius: 5px;
+        font-size: 18px;
+        padding: 10px;
+        font-weight: bold;
+        background: #ff9800;
+        border: none;
+        transition: all 0.3s ease-in-out;
+    }
+
+    /* Button hover effect */
+    .login-btn:hover {
+        background: #e68a00;
+        transform: scale(1.05);
+        box-shadow: 0px 4px 10px rgba(255, 152, 0, 0.5);
+    }
+
+    /* Signup link styling */
+    .signup-link {
+        color: #ffcc80;
+        font-weight: bold;
+        text-decoration: none;
+        transition: all 0.3s;
+    }
+
+    /* Signup link hover effect */
+    .signup-link:hover {
+        color: #ffffff;
+        text-decoration: underline;
+    }
+</style>
+
+{% endblock %}

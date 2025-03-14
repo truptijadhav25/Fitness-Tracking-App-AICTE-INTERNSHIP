@@ -1,0 +1,184 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="text-center">
+        <h2 class="fw-bold text-primary">Train Anywhere, Anytime 🏋️‍♂️</h2>
+        <p class="text-muted">Choose your workout and stay fit!</p>
+    </div>
+
+    <!-- Workouts Section -->
+    <div class="row mt-4">
+        {% set workouts = [
+            {"title": "Walking", "image": "walking.jpg"},
+            {"title": "Running", "image": "running.jpg"},
+            {"title": "Yoga", "image": "yoga.jpg"},
+            {"title": "HIIT Cardio", "image": "hiit.jpg"},
+            {"title": "Strength Training", "image": "strength.jpg"},
+            {"title": "Stretching", "image": "stretching.jpg"}
+        ] %}
+
+        {% for workout in workouts %}
+        <div class="col-md-4 col-sm-6 mb-4">
+            <div class="card workout-card">
+                <img src="{{ url_for('static', filename='images/' + workout.image) }}" class="card-img-top" alt="{{ workout.title }}">
+                <div class="card-body text-center">
+                    <h5 class="card-title">{{ workout.title }}</h5>
+                    <button class="btn btn-primary start-btn" data-workout="{{ workout.title }}">
+                        <i class="fas fa-play-circle"></i> Start Workout
+                    </button>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Workout Modal -->
+<div id="workoutModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2 id="workoutTitle"></h2>
+        <div class="timer">
+            <i class="fas fa-clock fa-3x text-primary"></i>
+            <p id="countdown">00:00</p>
+            <progress id="progressBar" value="100" max="100"></progress>
+            <input type="number" id="workoutDuration" min="1" max="120" value="30">
+            <label for="workoutDuration">Set Workout Duration (minutes)</label>
+        </div>
+        <button id="startPauseBtn" class="btn btn-success"><i class="fas fa-play"></i> Start</button>
+        <button id="endWorkoutBtn" class="btn btn-danger">End Workout</button>
+        <p id="workoutSummary" class="mt-3 text-success"></p>
+    </div>
+</div>
+
+<!-- Styles -->
+<style>
+    .workout-card {
+        border-radius: 12px;
+        overflow: hidden;
+        transition: transform 0.3s ease-in-out;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    .workout-card:hover {
+        transform: scale(1.05);
+    }
+    .card-img-top {
+        height: 180px;
+        object-fit: cover;
+    }
+    .start-btn {
+        margin-top: 10px;
+        transition: 0.3s;
+        font-size: 1.1rem;
+    }
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 10;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .modal-content {
+        background: white;
+        padding: 20px;
+        width: 50%;
+        border-radius: 10px;
+        text-align: center;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+    .close {
+        float: right;
+        font-size: 28px;
+        cursor: pointer;
+    }
+    .timer {
+        margin-top: 10px;
+        font-size: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+</style>
+
+<!-- Script for handling modal and timer -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const startBtns = document.querySelectorAll(".start-btn");
+        const modal = document.getElementById("workoutModal");
+        const closeBtn = document.querySelector(".close");
+        const workoutTitle = document.getElementById("workoutTitle");
+        const countdown = document.getElementById("countdown");
+        const progressBar = document.getElementById("progressBar");
+        const startPauseBtn = document.getElementById("startPauseBtn");
+        const endWorkoutBtn = document.getElementById("endWorkoutBtn");
+        const workoutDuration = document.getElementById("workoutDuration");
+        const workoutSummary = document.getElementById("workoutSummary");
+        let timer, timeLeft, isRunning = false;
+
+        startBtns.forEach(button => {
+            button.addEventListener("click", function () {
+                let workout = this.dataset.workout;
+                workoutTitle.innerText = workout;
+                modal.style.display = "block";
+                timeLeft = workoutDuration.value * 60;
+                countdown.innerText = formatTime(timeLeft);
+                progressBar.value = 100;
+            });
+        });
+
+        closeBtn.addEventListener("click", closeWorkout);
+        window.addEventListener("click", function (event) {
+            if (event.target == modal) closeWorkout();
+        });
+
+        function closeWorkout() {
+            modal.style.display = "none";
+            clearInterval(timer);
+            isRunning = false;
+            startPauseBtn.innerHTML = '<i class="fas fa-play"></i> Start';
+        }
+
+        function formatTime(seconds) {
+            let min = Math.floor(seconds / 60);
+            let sec = seconds % 60;
+            return `${min}:${sec < 10 ? '0' : ''}${sec}`;
+        }
+
+        startPauseBtn.addEventListener("click", function () {
+            if (!isRunning) {
+                isRunning = true;
+                startPauseBtn.innerHTML = '<i class="fas fa-pause"></i> Pause';
+                timer = setInterval(() => {
+                    if (timeLeft > 0) {
+                        timeLeft--;
+                        countdown.innerText = formatTime(timeLeft);
+                        progressBar.value = (timeLeft / (workoutDuration.value * 60)) * 100;
+                    } else {
+                        clearInterval(timer);
+                        isRunning = false;
+                        alert("Workout Completed!");
+                    }
+                }, 1000);
+            } else {
+                clearInterval(timer);
+                isRunning = false;
+                startPauseBtn.innerHTML = '<i class="fas fa-play"></i> Start';
+            }
+        });
+
+        endWorkoutBtn.addEventListener("click", function () {
+            clearInterval(timer);
+            workoutSummary.innerText = `Workout Completed! Time Spent: ${formatTime(workoutDuration.value * 60 - timeLeft)} minutes.`;
+            closeWorkout();
+        });
+    });
+</script>
+
+{% endblock %}

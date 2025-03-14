@@ -1,0 +1,9 @@
+flask
+flask-cors
+flask-restful
+pymongo
+gunicorn
+python-dotenv
+flask-bcrypt
+pandas
+scikit-learn

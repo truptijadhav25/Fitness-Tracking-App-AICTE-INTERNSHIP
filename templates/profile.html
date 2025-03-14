@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh; padding-top: 10px;">
+    <div class="card shadow-lg p-5 text-center animated-card" 
+         style="width: 500px; border-radius: 20px; background: linear-gradient(135deg, #6a11cb, #2575fc); color: white;">
+        
+        <div class="text-center">
+            <img src="{{ user.avatar if user.avatar else 'https://cdn-icons-png.flaticon.com/512/149/149071.png' }}" 
+                 class="rounded-circle border border-4 border-white mb-3 user-avatar" 
+                 alt="User Avatar"
+                 style="width: 120px; height: 120px; object-fit: cover;">
+            <h2 class="fw-bold">{{ user.name }}</h2>
+            <p class="text-light">{{ user.email }}</p>
+        </div>
+        
+        <hr class="my-4 border-light">
+        
+        <div class="profile-info">
+            <div class="row text-center">
+                <div class="col-6 mb-3">
+                    <p><strong>Age:</strong> <span class="badge custom-badge bg-primary fs-6">{{ user.age }}</span></p>
+                </div>
+                <div class="col-6 mb-3">
+                    <p><strong>Gender:</strong> <span class="badge custom-badge bg-success fs-6">{{ user.gender }}</span></p>
+                </div>
+                <div class="col-6">
+                    <p><strong>Height:</strong> <span class="badge custom-badge bg-warning fs-6">{{ user.height }} cm</span></p>
+                </div>
+                <div class="col-6">
+                    <p><strong>Weight:</strong> <span class="badge custom-badge bg-danger fs-6">{{ user.weight }} kg</span></p>
+                </div>
+                <div class="col-12 mt-3">
+                    <p><strong>BMI:</strong> <span class="badge custom-badge bg-info fs-6">{{ (user.weight / (user.height/100) ** 2)|round(2) }}</span></p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="d-grid mt-4">
+            <button class="btn custom-btn" data-bs-toggle="modal" data-bs-target="#editProfileModal">Edit Profile</button>
+        </div>
+        <div class="d-grid mt-2">
+            <form action="{{ url_for('logout') }}" method="POST">
+                <button type="submit" class="btn logout-btn">Logout</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Profile Modal -->
+<div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 700px;">
+        <div class="modal-content" style="border-radius: 15px; padding: 20px;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editProfileLabel">Edit Profile</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{ url_for('update_profile') }}" method="POST">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Name</label>
+                            <input type="text" class="form-control" name="name" value="{{ user.name }}">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" name="email" value="{{ user.email }}" readonly>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Age</label>
+                            <input type="number" class="form-control" name="age" value="{{ user.age }}">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Height (cm)</label>
+                            <input type="number" class="form-control" name="height" value="{{ user.height }}">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Weight (kg)</label>
+                            <input type="number" class="form-control" name="weight" value="{{ user.weight }}">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Gender</label>
+                            <select class="form-select" name="gender">
+                                <option value="Male" {% if user.gender == 'Male' %}selected{% endif %}>Male</option>
+                                <option value="Female" {% if user.gender == 'Female' %}selected{% endif %}>Female</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn custom-btn">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- CSS for Enhancements -->
+<style>
+    .animated-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        animation: fadeIn 1s ease-in-out;
+    }
+    .animated-card:hover {
+        transform: scale(1.03);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .custom-btn {
+        background: #ff6f61;
+        color: white;
+        font-weight: bold;
+        border-radius: 30px;
+        padding: 10px 15px;
+        transition: 0.3s;
+    }
+    .custom-btn:hover {
+        background: #e04e42;
+    }
+    .logout-btn {
+        background: #dc3545;
+        color: white;
+        font-weight: bold;
+        border-radius: 30px;
+        padding: 10px 15px;
+        transition: 0.3s;
+    }
+    .logout-btn:hover {
+        background: #b02a37;
+    }
+    .custom-badge {
+        padding: 8px 12px;
+        font-size: 14px;
+        border-radius: 12px;
+    }
+</style>
+{% endblock %}

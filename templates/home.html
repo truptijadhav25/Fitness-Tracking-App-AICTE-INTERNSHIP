@@ -1,0 +1,243 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    .hero-section {
+        animation: fadeIn 1.5s ease-in-out;
+    }
+
+    .logo {
+        animation: pulse 2s infinite;
+    }
+
+    .feature-card {
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .feature-card:hover {
+        transform: scale(1.05);
+    }
+
+    .stats-box {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .stats-box:hover {
+        transform: scale(1.05);
+    }
+
+    .testimonial-card {
+        background: #ffe6e6;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .testimonial-card:hover {
+        background: #ffcccc;
+        transform: scale(1.10);
+    }
+
+    .community-section {
+        background: #d9edf7;
+        padding: 40px;
+        border-radius: 15px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .community-section:hover {
+        transform: scale(1.05);
+    }
+
+    .qna-section {
+        background: #fff4cc;
+        padding: 30px;
+        border-radius: 10px;
+        transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out;
+    }
+
+    .qna-section:hover {
+        background: #ffeb99;
+        transform: scale(1.05);
+
+    }
+
+    .membership-container h4,
+    .membership-container p {
+        color: rgb(7, 7, 7) !important;
+        display: block !important;
+    }
+ 
+    .dark-heading {
+        color: #222;
+        text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .faq-container {
+        display: none;
+        animation: fadeIn 0.5s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+
+    @keyframes pulse {
+        0% {
+            transform: scale(1);
+        }
+
+        50% {
+            transform: scale(1.1);
+        }
+
+        100% {
+            transform: scale(1);
+        }
+    }
+
+    @keyframes fadeEffect {
+        0% {
+            opacity: 1;
+        }
+
+        100% {
+            opacity: 0.5;
+        }
+    }
+</style>
+
+<div class="container text-center mt-5 hero-section">
+    <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="Fitness Tracker Logo" class="mb-3 logo">
+    <h1 class="display-4 fw-bold text-primary dark-heading">Welcome to Fitness Tracker</h1>
+    <p class="lead text-secondary">Track your workouts, calories, and stay fit effortlessly!</p>
+    <a href="/signup" class="btn btn-success btn-lg mt-3 animate__animated animate__bounce"><i
+            class="fas fa-user-plus"></i> Get Started</a>
+
+    <div class="mt-5"></div>
+
+    <div class="mt-5 d-flex justify-content-center gap-4">
+        <div class="feature-card text-center p-4 bg-white shadow rounded">
+            <i class="fas fa-dumbbell fa-3x text-danger"></i>
+            <h3 class="mt-3">Workout Tracker</h3>
+            <p>Log your daily workouts and monitor progress.</p>
+        </div>
+        <div class="feature-card text-center p-4 bg-white shadow rounded">
+            <i class="fas fa-fire fa-3x text-warning"></i>
+            <h3 class="mt-3">Calorie Counter</h3>
+            <p>Track your calories to maintain a healthy diet.</p>
+        </div>
+        <div class="feature-card text-center p-4 bg-white shadow rounded">
+            <i class="fas fa-chart-line fa-3x text-success"></i>
+            <h3 class="mt-3">Progress Charts</h3>
+            <p>Visualize your fitness journey with graphs.</p>
+        </div>
+    </div>
+
+    <div class="community-section text-center mt-5">
+        <h2 class="text-primary">Our Community</h2>
+        <div class="row mt-4">
+            <div class="col-md-4 stats-box">
+                <h3><i class="fas fa-users text-info"></i> 10,000+</h3>
+                <p>Active Users</p>
+            </div>
+            <div class="col-md-4 stats-box">
+                <h3><i class="fas fa-dumbbell text-danger"></i> 50,000+</h3>
+                <p>Workouts Logged</p>
+            </div>
+            <div class="col-md-4 stats-box">
+                <h3><i class="fas fa-burn text-warning"></i> 1,000,000+</h3>
+                <p>Calories Burned</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-5 p-4 rounded text-center bg-light">
+        <h2 class="text-primary">What Our Users Say</h2>
+        <div class="d-flex justify-content-center gap-4 mt-4">
+            <div class="testimonial-card p-3">
+                <p>"This app helped me stay on track with my fitness goals!"</p>
+                <footer>— John Doe</footer>
+            </div>
+            <div class="testimonial-card p-3">
+                <p>"Easy to use and very effective in tracking my calories!"</p>
+                <footer>— Jane Smith</footer>
+            </div>
+            <div class="testimonial-card p-3">
+                <p>"Love the progress charts! Keeps me motivated."</p>
+                <footer>— Michael Lee</footer>
+            </div>
+        </div>
+    </div>
+
+    <div class="qna-section mt-5">
+        <h2 class="text-center">Have Questions? We Have Answers!</h2>
+        <p class="text-center">Find answers to common queries about our fitness tracker.</p>
+        <button class="btn btn-primary" onclick="toggleFAQ()">Visit FAQ</button>
+
+        <div class="faq-container mt-4 p-4 bg-white rounded shadow">
+            <h4>Frequently Asked Questions</h4>
+            <p><strong>Q: How do I log my workouts?</strong></p>
+            <p>A: Simply go to the "Workouts" section and add your exercise details.</p>
+
+            <p><strong>Q: Can I track my calorie intake?</strong></p>
+            <p>A: Yes! Use the "Calorie Counter" feature to log your daily meals.</p>
+
+            <p><strong>Q: Is this app free to use?</strong></p>
+            <p>A: Yes, our fitness tracker is free for all users.</p>
+
+            <p><strong>Q: How do I view my progress?</strong></p>
+            <p>A: Head over to the "Progress Charts" section for a visual representation of your fitness journey.</p>
+        </div>
+    </div>
+
+    <div class="mt-5 bg-dark text-white p-4 rounded text-center">
+        <h2>Join Our Monthly Fitness Challenge!</h2>
+        <p>Compete with others and push your limits. Track your progress and win rewards.</p>
+        <button class="btn btn-warning btn-lg animate__animated animate__pulse animate__infinite"
+            onclick="toggleMembershipInfo()">Join Now</button>
+
+        <div class="membership-container mt-4 p-4 bg-white rounded shadow" style="display: none;">
+            <h2 class="text-center text-primary">Membership Information</h2>
+            <p class="text-center">All our basic content is free! But if you need expert advice on your weight, meal
+                guidance, and a personalized fitness plan, check out our premium membership options:</p>
+
+            <ul class="list-group p-3 mb-2 bg-warning">
+                <li class="list-group-item">Expert diet and workout guidance</li>
+                <li class="list-group-item">Exclusive fitness challenges</li>
+                <li class="list-group-item">24/7 support from fitness coaches</li>
+            </ul>
+
+            <ul class="list-group-item">
+                <h4 class="mt-3 text-center">Pricing Plans:</h4>
+                <p class="text-center"><strong>Monthly Plan:</strong> <button>₹199/month</button></p>
+                <p class="text-center"><strong>Yearly Plan:</strong> <button>₹1999/year (Save 20%)</button></p>
+            </ul>
+           
+        </div>
+    </div>
+</div>
+
+<script>
+    function toggleFAQ() {
+        const faqContainer = document.querySelector('.faq-container');
+        faqContainer.style.display = faqContainer.style.display === 'none' || faqContainer.style.display === '' ? 'block' : 'none';
+    }
+    function toggleMembershipInfo() {
+        const membershipContainer = document.querySelector('.membership-container');
+        membershipContainer.style.display = membershipContainer.style.display === 'none' || membershipContainer.style.display === '' ? 'block' : 'none';
+    }
+</script>
+
+{% endblock %}

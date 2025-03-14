@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar with Input Parameters -->
+        <div class="col-md-3 bg-light p-4">
+            <h5 class="mb-3">User Input Parameters:</h5>
+            <form method="post">
+                <label>Age: <span id="ageValue">30</span></label>
+                <input type="range" name="age" id="ageSlider" min="10" max="100" value="30" class="form-control-range">
+
+                <label>Height: <span id="heightDisplay">170 cm</span></label>
+                <input type="range" name="height" id="heightSlider" min="140" max="200" value="170" class="form-control-range">
+
+                <label>Weight (kg): <span id="weightValue">70</span></label>
+                <input type="range" name="weight" id="weightSlider" min="40" max="150" value="70" class="form-control-range">
+
+                <label>Duration (minutes): <span id="durationValue">20</span></label>
+                <input type="range" name="duration" id="durationSlider" min="0" max="60" value="20" class="form-control-range">
+
+                <label>Heart Rate: <span id="heartRateValue">80</span></label>
+                <input type="range" name="heart_rate" id="heartRateSlider" min="60" max="130" value="80" class="form-control-range">
+
+                <label>Gender:</label>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="gender" value="Male" checked> Male
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="gender" value="Female"> Female
+                </div>
+
+                <button type="submit" class="btn btn-primary mt-3">Predict</button>
+            </form>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-md-9 p-4" id="tracker-section">
+            <h2>Personal Fitness Tracker</h2>
+            <p>Adjust your parameters to get a personalized fitness prediction.</p>
+            
+            {% if prediction %}
+                <h4 class="mt-4">Your Parameters:</h4>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Age</th>
+                            <th>Height</th>
+                            <th>Weight</th>
+                            <th>Duration</th>
+                            <th>Heart Rate</th>
+                            <th>Gender</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td id="age">{{ request.form['age'] }}</td>
+                            <td id="height">{{ request.form['height'] }} cm</td>
+                            <td id="weight">{{ request.form['weight'] }} kg</td>
+                            <td id="duration">{{ request.form['duration'] }} min</td>
+                            <td id="heartRate">{{ request.form['heart_rate'] }} bpm</td>
+                            <td id="gender">{{ request.form['gender'] }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <h4 class="mt-4">Predicted Calories Burned:</h4>
+                <div class="progress">
+                    <div class="progress-bar bg-success" role="progressbar" style="width: 80%;">
+                        {{ prediction }} kilocalories
+                    </div>
+                </div>
+
+                <h4 class="mt-4">Fitness Insights:</h4>
+                <ul>
+                    <li>Your ideal weight: <b>{{ ideal_weight }} kg</b></li>
+                    <li>Weight to lose: <b>{{ weight_to_lose }} kg</b></li>
+                    <li>Calories to burn daily: <b>{{ calories_to_burn }} kcal</b></li>
+                    <li>Recommended daily water intake: <b><span id="waterIntake">Calculating...</span></b></li>
+                </ul>
+
+                <h4 class="mt-4">Recommended Workouts:</h4>
+                <ul>
+                    {% for workout in recommended_workouts %}
+                        <li>{{ workout }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Custom Styling -->
+<style>
+    #tracker-section {
+        background: linear-gradient(to right, #74ebd5, #ACB6E5);
+        color: #333; /* Changed to a dark color for better readability */
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    h2, h4 {
+        font-weight: bold;
+        color: #222; /* Darkened for contrast */
+    }
+
+    .progress {
+        height: 25px;
+    }
+
+    .progress-bar {
+        font-size: 18px;
+        line-height: 25px;
+    }
+</style>
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+{% endblock %}
